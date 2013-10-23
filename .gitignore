@@ -1,0 +1,9 @@
+# ignore system files
+\.*
+
+# except .gitignore
+!.gitignore
+
+# ignore demo cache files
+css/bmin\.*
+js/bmin\.*
