@@ -25,9 +25,10 @@ Name | Type | Default | Description
 `version` | mixed |  | Version name (string) or set true for auto generation (timestamp).
 `group` | string | main | Default group name.
 `prefix` | string | bmin | Prefix for compiled files.
-`styles` | string | css/ | Root folder for compiled css files (relative to site root).
-`scripts` | string | js/ | Root folder for compiled js files (relative to site root).
-`files` | string |  | Root for fileset files include path (relative to site root).
+`styles` | string | css/ | Root folder for compiled css files (relative to app root).
+`scripts` | string | js/ | Root folder for compiled js files (relative to app root).
+`files` | string |  | Root for fileset files include path (relative to app root).
+`root` | string |  | Application root.
 
 ## Dependencies
 
