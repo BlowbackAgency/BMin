@@ -31,6 +31,7 @@ class BMin {
 		'styles' => 'css/',    // root for compiled css files
 		'scripts' => 'js/',    // root for compiled js files
 		'files' => '',         // root for fileset files include path
+		'root' => ''           // application root
 	);
 	
 	/**
@@ -64,9 +65,12 @@ class BMin {
 		// set options
 		if (count($options)) $this->set('options', $options); 
 		
+		// set root folder
+		$root = empty($options['root']) ? dirname($_SERVER['SCRIPT_NAME']) : $options['root']; 
+		
 		// set paths
 		$this->path = rtrim(dirname(__FILE__), '/') . '/'; 
-		$this->url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/'; 
+		$this->url = '/' . trim($root, '/') . '/'; 
 		
 		// set file endings
 		$this->ending['styles'] = 'css'; 
