@@ -34,7 +34,7 @@ Name | Type | Default | Description
 
 - [Minify_CSS_Compressor](https://github.com/mrclay/minify/blob/master/min/lib/Minify/CSS/Compressor.php)
 - [JSMin](https://github.com/mrclay/minify/blob/master/min/lib/JSMin.php)
-- [lessc](https://github.com/leafo/lessphp/blob/master/lessc.inc.php)
+- [less.php](https://github.com/oyejorge/less.php)
 
 ## Usage
 

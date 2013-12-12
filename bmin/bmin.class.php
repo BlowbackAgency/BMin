@@ -78,8 +78,8 @@ class BMin {
 		
 		// get includes
 		require_once $this->path . 'Compressor.php'; 
-		require_once $this->path . 'lessc.inc.php'; 
 		require_once $this->path . 'JSMin.php'; 
+		require_once $this->path . 'Less.php'; 
 	}
 	
 	public function init() { 
@@ -414,7 +414,7 @@ class BMin {
 		$newlines = is_bool($newlines) ? $newlines : null; 
 		
 		// set lessc with css files
-		$less = $ending === 'css' ? new lessc : null; 
+		$less = $ending === 'css' ? new Less_Parser : null; 
 		
 		// loop each file
 		foreach ($fileset as $file) {
@@ -423,10 +423,10 @@ class BMin {
 			// file is readable
 			if (@file_exists($file) && @is_readable($file)) {
 				// get less files
-				if (($less && $this->fileExtension($file) === 'less')) {
-					try { $out .= $less->compileFile($file); } 
-					catch (exception $e) { throw new Exception($e->getMessage()); }
-				} 
+				if ($less && $this->fileExtension($file) === 'less') {
+					$less->parseFile($file); 
+					$out .= $less->getCss(); 
+				}
 				// get files without preprocessing
 				else $out .= @file_get_contents($file); 
 			}
