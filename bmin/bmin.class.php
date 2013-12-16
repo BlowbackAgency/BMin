@@ -58,8 +58,8 @@ class BMin {
 		
 		// set fileset
 		if (count($fileset)) {
-			$this->fileset['styles'] = count($fileset['styles']) ? $fileset['styles'] : null; 
-			$this->fileset['scripts'] = count($fileset['scripts']) ? $fileset['scripts'] : null; 
+			$this->fileset['styles'] = isset($fileset['styles']) ? $fileset['styles'] : null; 
+			$this->fileset['scripts'] = isset($fileset['scripts']) ? $fileset['scripts'] : null; 
 		} else $this->fileset = null; 
 		
 		// set options
