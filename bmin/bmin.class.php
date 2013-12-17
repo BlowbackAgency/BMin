@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2013 Jukka Hankaniemi - Blowback.fi
  *
- * @version 1.0.2
+ * @version 1.0.3
  * @author Jukka Hankaniemi https://github.com/Roope
  * @copyright Blowback https://github.com/BlowbackDesign
  * @license MIT http://opensource.org/licenses/MIT
