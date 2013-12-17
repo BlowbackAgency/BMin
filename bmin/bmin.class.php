@@ -70,7 +70,7 @@ class BMin {
 		
 		// set paths
 		$this->path = rtrim(dirname(__FILE__), '/') . '/'; 
-		$this->url = '/' . trim($root, '/') . '/'; 
+		$this->url = '/' . ltrim('/' . trim($root, '/') . '/', '/'); 
 		
 		// set file endings
 		$this->ending['styles'] = 'css'; 
