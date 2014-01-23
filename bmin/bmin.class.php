@@ -412,10 +412,7 @@ class BMin {
 		$out = null; 
 		$compress = is_bool($compress) ? $compress : null; 
 		$newlines = is_bool($newlines) ? $newlines : null; 
-		
-		// set lessc with css files
-		$less = $ending === 'css' ? new Less_Parser : null; 
-		
+				
 		// loop each file
 		foreach ($fileset as $file) {
 			// filename with path
@@ -423,7 +420,8 @@ class BMin {
 			// file is readable
 			if (@file_exists($file) && @is_readable($file)) {
 				// get less files
-				if ($less && $this->fileExtension($file) === 'less') {
+				if ($this->fileExtension($file) === 'less') {
+					$less = new Less_Parser; 
 					$less->parseFile($file); 
 					$out .= $less->getCss(); 
 				}
