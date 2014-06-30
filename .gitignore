@@ -4,6 +4,8 @@
 # except .gitignore
 !.gitignore
 
+# ignore test folder
+test/
+
 # ignore demo cache files
-css/bmin\.*
-js/bmin\.*
+demo/**/**/bmin\.*
