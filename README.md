@@ -35,6 +35,6 @@ Check out [examples at demo folder](./demo/) for usage instructions.
 
 ## License
 
-[The MIT License (MIT)](./LICENCE.md)
+[The MIT License (MIT)](./LICENSE.md)
 
 Copyright (c) 2014 Blowback - https://github.com/BlowbackDesign
