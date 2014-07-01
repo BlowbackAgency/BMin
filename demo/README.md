@@ -24,4 +24,15 @@ $bmin->scripts(array(
 ));
 
 ?>
+<!doctype html>
+<html>
+<head>
+	<title>My Document</title>
+	<link rel="stylesheet" href="<?php echo $bmin->styles(); ?>" />
+</head>
+<body>
+	...
+	<script src="<?php echo $bmin->scripts(); ?>"></script>
+</body>
+</html>
 ```
