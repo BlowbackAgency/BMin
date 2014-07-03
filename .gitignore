@@ -1,8 +1,9 @@
-# ignore system files
+# ignore dot files
 \.*
 
-# except .gitignore
+# except .gitignore and .gitattributes
 !.gitignore
+!.gitattributes
 
 # ignore test folder
 test/
