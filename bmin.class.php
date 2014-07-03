@@ -111,6 +111,7 @@ class BMin {
 	public function set($key, $value) {
 		if($key == 'config' && is_array($value)) $this->config = array_merge($this->options, $value);
 		else if(array_key_exists($key, $this->options)) $this->config[$key] = $value;
+		if(in_array($key, array('root','path'))) $this->$key = $this->pathName($value);
 		return $this;
 	}
 	
