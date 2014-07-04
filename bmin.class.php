@@ -369,7 +369,7 @@ class BMin {
 	 *
 	 */
 	protected function processFileset($type, $group) {
-		
+
 		$build = true;
 		$cachefile = $this->fileName($type, $group, true);
 		$cache = $this->data[$type][$group]['config']['cache'];
@@ -378,25 +378,23 @@ class BMin {
 
 			$build = false;
 			$cachetime = filemtime($cachefile);
-			$expires = $this->data[$type][$group]['config']['expires'];
 
-			if(($cachetime + $expires) < time()) $build = true;
+			// build new file if old one is expired
+			if(($cachetime + $this->data[$type][$group]['config']['expires']) < time()) $build = true;
 
-			if(!$build) {
-				foreach($this->data[$type][$group]['files'] as $file) {
-					if($cachetime < $file['time']) $build = true;
-				}
-			}
+			// build new file if files in this set has changed
+			if(!$build && $this->filesetHash($type, $group) != $this->filesetHash($cachefile)) $build = true;
+
+			// build new file if files in this set has updated
+			if(!$build) foreach($this->data[$type][$group]['files'] as $file) if($cachetime < $file['time']) $build = true;
 
 		}
 
-		if($build || $cache === false) {
-			if($this->processFilesetFiles($type, $group)) $build = false;
-		}
+		// if build is set or cache disabled, process new cachefile
+		if($build || $cache === false) if($this->processFilesetFiles($type, $group)) $build = false;
 
-		if($build === false) {
-			return $this->fileName($type, $group);
-		}
+		// return filename if build was successful
+		if($build === false) return $this->fileName($type, $group);
 
 		return false;
 	}
@@ -449,6 +447,10 @@ class BMin {
 				$str = str_replace(array("\r\n","\r","\n"), " ", $str);
 			}
 		}
+
+		// add fileset hash to first line of string
+		$hash = $this->filesetHash($type, $group);
+		$str = "/* BMin {$type} {$group} #{$hash} */" . PHP_EOL . $str;
 
 		// create destination folder
 		$dir = pathinfo($cachefile, PATHINFO_DIRNAME);
@@ -510,7 +512,30 @@ class BMin {
 		$key = $pos ? substr($name, 0, $pos) : $name;
 		return md5($key);
 	}
-	
+
+	/**
+	 * Return hash for fileset files
+	 *
+	 * @param string $type Fileset type or File path name
+	 * @param string $group Fileset group
+	 * @return string
+	 *
+	 */
+	protected function filesetHash($type, $group=null) {
+		if($group === null) {
+			// when only type is set (filepath) read the hash from file
+			$file = fopen($type, 'r');
+			$data = explode('#', fgets($file));
+			fclose($file);
+			return substr(array_pop($data), 0, 32);
+		} else {
+			// otherwise generate new hash from fileset file paths
+			$str = '';
+			foreach($this->data[$type][$group]['files'] as $file) $str .= $file['filepath'];
+			return md5($str);
+		}
+	}
+
 	/**
 	 * Return debug data
 	 *
