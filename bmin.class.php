@@ -527,6 +527,7 @@ class BMin {
 					$cachefile = $this->fileName($type, $group, true);
 					$out .= "\n{$type}('{$group}') {\n";
 					if(@is_file($cachefile)) {
+						clearstatcache();
 						$filesize = round(filesize($cachefile) / 1024, 2);
 						$filetime = date($this->config['dateform'], filemtime($cachefile));
 						if(isset($a['process'])) {
