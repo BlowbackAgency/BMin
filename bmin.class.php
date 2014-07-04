@@ -194,7 +194,7 @@ class BMin {
 	}
 
 	/**
-	 * Check if there is some data set for given type/group combo
+	 * Check if there is some valid file data set for given type/group combo
 	 *
 	 * @param string $type Data type name
 	 * @param string $group Data group name
@@ -202,9 +202,7 @@ class BMin {
 	 *
 	 */
 	protected function issetData($type, $group) {
-		$type = $this->sanitize($type);
-		$group = $this->sanitize($group);
-		return isset($this->data[$type][$group]);
+		return isset($this->data[$type][$group]['files']);
 	}
 
 	/**
