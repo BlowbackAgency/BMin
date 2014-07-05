@@ -98,12 +98,13 @@ class BMin {
 			// get includes
 			$include_dir = dirname(__FILE__) . '/lib';
 			require_once "{$include_dir}/Compressor.php";
-			require_once "{$include_dir}/JSMin.php";
+			require_once "{$include_dir}/UriRewriter.php";
 			require_once "{$include_dir}/less/Less.php";
+			require_once "{$include_dir}/JSMin.php";
 		}
 
 	}
-	
+
 	/**
 	 * Configuration options setter
 	 *
@@ -409,28 +410,37 @@ class BMin {
 	 */
 	protected function processFilesetFiles($type, $group) {
 
-		$str = '';
-		$files = $this->data[$type][$group]['files'];
-		$cachefile = $this->fileName($type, $group, true);
-		$compress = $this->data[$type][$group]['config']['compress'];
-		$newlines = $this->data[$type][$group]['config']['newlines'];
-
 		// set process start time
 		$this->data[$type][$group]['process']['start'] = microtime(true);
 
-		// get all files from group
-		foreach($files as $key => $val) {
+		$str = '';
+		$cachefile = $this->fileName($type, $group, true);
+		$filepath = pathinfo($cachefile, PATHINFO_DIRNAME);
+		$compress = $this->data[$type][$group]['config']['compress'];
+		$newlines = $this->data[$type][$group]['config']['newlines'];
+
+		// iterate files from this group
+		foreach($this->data[$type][$group]['files'] as $key => $val) {
+
 			$file = $val['filepath'];
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
+
+			// get file data
 			switch($extension) {
 				case 'less':
 					$less = new Less_Parser;
 					$less->parseFile($file);
-					$str .= $less->getCss();
+					$data = $less->getCss();
 					break;
 				default:
-					$str .= @file_get_contents($file);
+					$data = @file_get_contents($file);
 			}
+
+			if(is_string($data)) {
+				if($type == 'styles') $str .= Minify_CSS_UriRewriter::rewrite($data, pathinfo($file, PATHINFO_DIRNAME));
+				else $str .= $data;
+			}
+
 		}
 
 		// compress data
@@ -453,8 +463,7 @@ class BMin {
 		$str = "/* BMin {$type} {$group} #{$hash} */" . PHP_EOL . $str;
 
 		// create destination folder
-		$dir = pathinfo($cachefile, PATHINFO_DIRNAME);
-		if(!file_exists($dir)) mkdir($dir, 0777, true);
+		if(!file_exists($filepath)) mkdir($filepath, 0777, true);
 
 		// save string to cache file
 		@file_put_contents($cachefile, $str, LOCK_EX);
