@@ -437,7 +437,7 @@ class BMin {
 			}
 
 			if(is_string($data)) {
-				if($type == 'styles') $str .= Minify_CSS_UriRewriter::rewrite($data, pathinfo($file, PATHINFO_DIRNAME));
+				if($type == 'styles') $str .= Minify_CSS_UriRewriter::rewrite($data, pathinfo($file, PATHINFO_DIRNAME), $this->root);
 				else $str .= $data;
 			}
 
